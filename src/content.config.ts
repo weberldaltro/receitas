@@ -8,7 +8,7 @@ const receitas = defineCollection({
         title: z.string(),
         description: z.string(),
         image: z.string(),
-        category: z.enum(['Aves', 'Peixes', 'Suínos', 'Bovinos', 'Vegetal', 'Doces']),
+        category: z.enum(['Aves', 'Peixes', 'Suínos', 'Bovinos', 'Vegetal', 'Doces', 'Massas']),
         time: z.string(),
         portions: z.string()
     })
