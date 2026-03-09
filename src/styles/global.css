@@ -1,0 +1,107 @@
+/* src/styles/global.css */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Cores Principais */
+  --color-primary: #F25D27; /* Laranja Seara */
+  --color-brand: #C8102E; /* Vermelho */
+
+  /* Cores de Fundo */
+  --bg-main: #F7F7F7; /* Cinza Muito Claro */
+  --bg-surface: #FFFFFF; /* Branco Puro */
+  --bg-dark: #1A1A1A; /* Grafite Escuro */
+
+  /* Cores Categóricas */
+  --cat-aves: #FF4500; /* Laranja-avermelhado */
+  --cat-peixes: #87CEEB; /* Azul Celeste */
+  --cat-suinos: #FF1493; /* Rosa Choque */
+  --cat-bovinos: #EE0000; /* Vermelho Vivo */
+  --cat-vegetal: #32CD32; /* Verde Limão */
+  --cat-doces: #8A2BE2; /* Roxo */
+
+  /* Tipografia */
+  --font-family-base: 'Outfit', sans-serif;
+  --text-dark: #333333; /* Corpo de Texto */
+  --text-light: #FFFFFF;
+
+  /* Formas e Sombras */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-floating: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  /* Espaçamento (Base: 8px) */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 48px;
+  --spacing-xxl: 80px;
+
+  /* Transições */
+  --transition-smooth: all 0.3s ease;
+}
+
+/* Reset Básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--bg-main);
+  color: var(--text-dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tipografia Base */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--spacing-sm);
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: var(--color-primary);
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin-bottom: var(--spacing-sm);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-smooth);
+}
+
+/* Utilitários */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.bg-dark {
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+}

@@ -1,0 +1,93 @@
+---
+// src/components/Button.astro
+interface Props {
+  variant?: 'primary' | 'secondary' | 'fab';
+  as?: 'button' | 'a';
+  href?: string;
+  class?: string;
+  type?: 'button' | 'submit' | 'reset';
+  [x: string]: any;
+}
+
+const {
+  variant = 'primary',
+  as: Component = 'button',
+  href,
+  class: className = '',
+  type = 'button',
+  ...rest
+} = Astro.props;
+
+// Determine appropriate element attrs
+const attrs = Component === 'a' ? { href, ...rest } : { type, ...rest };
+---
+
+<Component class={`btn btn-${variant} ${className}`} {...attrs}>
+  <slot />
+</Component>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--font-family-base);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    border: none;
+    text-decoration: none;
+  }
+
+  /* Primary Formato Pill */
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--text-light);
+    padding: 12px 32px;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 4px 14px rgba(242, 93, 39, 0.3);
+  }
+
+  .btn-primary:hover {
+    background-color: #d1491a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(242, 93, 39, 0.4);
+  }
+
+  /* Secondary Outlined */
+  .btn-secondary {
+    background-color: transparent;
+    color: var(--color-primary);
+    padding: 10px 30px;
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--color-primary);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--text-light);
+  }
+
+  /* FAB Modal/Floating */
+  .btn-fab {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: var(--text-light);
+    box-shadow: var(--shadow-floating);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    z-index: 1000;
+  }
+
+  .btn-fab:hover {
+    transform: scale(1.1);
+  }
+</style>

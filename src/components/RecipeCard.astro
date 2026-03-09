@@ -1,0 +1,170 @@
+---
+// src/components/RecipeCard.astro
+interface Props {
+  title: string;
+  image: string;
+  category: string;
+  time: string;
+  portions: string;
+  url: string;
+}
+
+const { title, image, category, time, portions, url } = Astro.props;
+
+// Categorical Colors mapping based on Design System
+const categoryColors: Record<string, string> = {
+  'Aves': 'var(--cat-aves)',
+  'Peixes': 'var(--cat-peixes)',
+  'Suínos': 'var(--cat-suinos)',
+  'Bovinos': 'var(--cat-bovinos)',
+  'Vegetal': 'var(--cat-vegetal)',
+  'Doces': 'var(--cat-doces)',
+};
+
+const badgeColor = categoryColors[category] || 'var(--color-primary)';
+---
+
+<a href={url} class="recipe-card">
+  <div class="card-image-wrapper">
+    <img src={image} alt={title} class="card-image" loading="lazy" />
+    <div class="category-badge" style={`background-color: ${badgeColor}`}>{category}</div>
+    <button class="favorite-btn" aria-label="Favoritar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+      </svg>
+    </button>
+  </div>
+  <div class="card-content">
+    <h3 class="card-title">{title}</h3>
+    <div class="card-meta">
+      <div class="meta-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>{time}</span>
+      </div>
+      <div class="meta-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>{portions}</span>
+      </div>
+    </div>
+  </div>
+</a>
+
+<style>
+  .recipe-card {
+    display: block;
+    background-color: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition-smooth);
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .recipe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-floating);
+  }
+
+  .card-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-smooth);
+  }
+
+  .recipe-card:hover .card-image {
+    transform: scale(1.05);
+  }
+
+  .category-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    letter-spacing: 0.5px;
+    z-index: 10;
+  }
+
+  .favorite-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(4px);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-dark);
+    transition: var(--transition-smooth);
+    z-index: 10;
+  }
+
+  .favorite-btn:hover {
+    color: var(--color-brand);
+    background-color: #fff;
+    transform: scale(1.1);
+  }
+
+  .card-content {
+    padding: var(--spacing-sm) var(--spacing-md);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.4;
+    color: var(--text-dark);
+    flex: 1;
+  }
+
+  .recipe-card:hover .card-title {
+    color: var(--color-primary);
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid #F0F0F0;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 500;
+  }
+
+  .meta-item svg {
+    color: var(--color-primary);
+  }
+</style>

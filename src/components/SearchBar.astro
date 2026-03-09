@@ -1,0 +1,68 @@
+---
+// src/components/SearchBar.astro
+interface Props {
+  placeholder?: string;
+  class?: string;
+  [x: string]: any;
+}
+
+const {
+  placeholder = "Buscar receitas, ingredientes...",
+  class: className = '',
+  ...rest
+} = Astro.props;
+---
+
+<div class={`search-wrapper ${className}`}>
+  <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="8"></circle>
+    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+  <input type="text" class="search-input" placeholder={placeholder} {...rest} />
+</div>
+
+<style>
+  .search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    color: #999;
+    transition: var(--transition-smooth);
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 16px 20px 16px 48px;
+    font-family: var(--font-family-base);
+    font-size: 1rem;
+    color: var(--text-dark);
+    background-color: var(--bg-surface);
+    border: 1px solid #E0E0E0;
+    border-radius: var(--radius-md);
+    outline: none;
+    transition: var(--transition-smooth);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  }
+
+  .search-input::placeholder {
+    color: #A0A0A0;
+  }
+
+  .search-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(242, 93, 39, 0.1);
+  }
+
+  .search-input:focus + .search-icon {
+    color: var(--color-primary);
+  }
+</style>

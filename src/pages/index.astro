@@ -1,11 +1,165 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import SearchBar from '../components/SearchBar.astro';
+import RecipeCard from '../components/RecipeCard.astro';
+import { getCollection } from 'astro:content';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Fetch all recipes
+const receitas = await getCollection('receitas');
+
+// Categorias mock para o filtro visual
+const categorias = [
+  { name: 'Todas', active: true },
+  { name: 'Aves', active: false },
+  { name: 'Peixes', active: false },
+  { name: 'Suínos', active: false },
+  { name: 'Bovinos', active: false },
+  { name: 'Vegetal', active: false },
+  { name: 'Doces', active: false }
+];
 ---
+<Layout title="Minha Receita - Seara Design">
+  <section class="hero-section">
+    <div class="container hero-content">
+      <h1 class="hero-title">O que você quer <span>cozinhar</span> hoje?</h1>
+      <p class="hero-subtitle">Encontre as melhores receitas com foco em sabor, qualidade e requinte.</p>
+      <div class="search-container">
+        <SearchBar />
+      </div>
+    </div>
+  </section>
 
-<Layout>
-	<Welcome />
+  <section class="categories-section container">
+    <div class="categories-list">
+      {categorias.map(cat => (
+        <button class={`category-chip ${cat.active ? 'active' : ''}`}>{cat.name}</button>
+      ))}
+    </div>
+  </section>
+
+  <section class="recipes-section container">
+    <div class="section-header">
+      <h2>Receitas de Destaque</h2>
+      <a href="#" class="view-all">Ver todas</a>
+    </div>
+    
+    <div class="recipes-grid">
+      {receitas.map((receita: any) => (
+        <RecipeCard 
+          title={receita.data.title}
+          image={receita.data.image}
+          category={receita.data.category}
+          time={receita.data.time}
+          portions={receita.data.portions}
+          url={`/receitas/${receita.id}`}
+        />
+      ))}
+    </div>
+  </section>
 </Layout>
+
+<style>
+  .hero-section {
+    padding: var(--spacing-xxl) 0;
+    text-align: center;
+    background: radial-gradient(circle at top, #FFF5F0, var(--bg-main));
+    border-bottom: 1px solid #F0F0F0;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .hero-title span {
+    color: var(--color-primary);
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: #666;
+    margin-bottom: var(--spacing-xl);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .search-container {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  .categories-section {
+    padding: var(--spacing-lg) var(--spacing-md);
+    margin-top: -24px;
+    position: relative;
+    z-index: 20;
+  }
+
+  .categories-list {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  .category-chip {
+    padding: 10px 24px;
+    border-radius: var(--radius-pill);
+    background-color: var(--bg-surface);
+    color: #666;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid #E0E0E0;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  }
+
+  .category-chip:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+
+  .category-chip.active {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(242, 93, 39, 0.2);
+  }
+
+  .recipes-section {
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+  }
+
+  .view-all {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .view-all:hover {
+    text-decoration: underline;
+  }
+
+  .recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-lg);
+  }
+</style>
