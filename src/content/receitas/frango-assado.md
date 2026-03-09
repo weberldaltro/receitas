@@ -1,7 +1,7 @@
 ---
 title: "Frango Assado com Batatas Rústicas"
 description: "Um delicioso clássico para o almoço de domingo, com temperos especiais e batatas douradas."
-image: "https://images.unsplash.com/photo-1598514982205-f36b96d1e8dd?q=80&w=2070&auto=format&fit=crop"
+image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=2070&auto=format&fit=crop"
 category: "Aves"
 time: "1h 30m"
 portions: "4 porções"
