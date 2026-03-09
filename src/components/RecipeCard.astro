@@ -19,12 +19,13 @@ const categoryColors: Record<string, string> = {
   'Bovinos': 'var(--cat-bovinos)',
   'Vegetal': 'var(--cat-vegetal)',
   'Doces': 'var(--cat-doces)',
+  'Lanches': 'var(--cat-lanches)',
 };
 
 const badgeColor = categoryColors[category] || 'var(--color-primary)';
 ---
 
-<a href={url} class="recipe-card">
+<a href={url} class="recipe-card" data-category={category}>
   <div class="card-image-wrapper">
     <img src={image} alt={title} class="card-image" loading="lazy" />
     <div class="category-badge" style={`background-color: ${badgeColor}`}>{category}</div>
