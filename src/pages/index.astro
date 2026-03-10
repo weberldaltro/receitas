@@ -68,9 +68,17 @@ const categorias = [
       const filters = document.querySelectorAll('.category-chip');
       const cards = document.querySelectorAll('.recipe-card');
       const searchInput = document.getElementById('recipe-search') as HTMLInputElement | null;
+      const navLinks = document.querySelectorAll('.nav-category-link');
 
       let activeCategory = 'Todas';
       let searchQuery = '';
+
+      // URL parsing
+      const params = new URLSearchParams(window.location.search);
+      const initialCategory = params.get('category');
+      if (initialCategory) {
+        activeCategory = initialCategory;
+      }
 
       const removeAccents = (str: string | null) => {
         return str ? str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() : '';
@@ -104,12 +112,42 @@ const categorias = [
         });
       };
 
+      const updateActiveChips = () => {
+        filters.forEach(btn => {
+          if (btn.getAttribute('data-category') === activeCategory) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      };
+
+      const setCategory = (cat: string) => {
+        activeCategory = cat;
+        updateActiveChips();
+        filterCards();
+        const newUrl = cat === 'Todas' ? window.location.pathname : `?category=${cat}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+      };
+
+      // Inicializa os filtros
+      updateActiveChips();
+      filterCards();
+
       filters.forEach(filter => {
         filter.addEventListener('click', () => {
-          filters.forEach(btn => btn.classList.remove('active'));
-          filter.classList.add('active');
-          activeCategory = filter.getAttribute('data-category') || 'Todas';
-          filterCards();
+          const cat = filter.getAttribute('data-category') || 'Todas';
+          setCategory(cat);
+        });
+      });
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const cat = link.getAttribute('data-category') || 'Todas';
+          setCategory(cat);
+          const dropdown = document.getElementById('nav-dropdown');
+          if (dropdown) dropdown.classList.remove('active');
         });
       });
 

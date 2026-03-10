@@ -48,13 +48,14 @@ A navegação da aplicação é simples e fluida. As páginas ficam no diretóri
 - **Corpo da Receita (Markdown):** É renderizado `<Content />` usando estilos globais focados em legibilidade e tipografia limpa.
 - **Sidebar (Dica do Chef):** Um painel lateral de design fixo.
 
-## 4. Componentes de UI (`src/components/`)
+## 4. Componentes de UI (`src/components/` & `src/layouts/`)
 A interface agrupa blocos reutilizáveis focados em modularização e padrão de design.
 
 - **`RecipeCard.astro`:** Elemento do grid que expõe um preview de uma receita contendo imagem, title, category, meta de infos (time, portions) e um link encapsulando o card que aponta para a rota de detalhes.
 - **`SearchBar.astro`:** Sub-componente visual da vitrine. (Atualmente desenhado para compor a estética do cabeçalho).
-- **`Button.astro`:** Componente de ação genérico. Trabalha via propriedades ou classes para estabelecer a hierarquia visual (primary, secondary/outlined e com ícones).
-- *(Layout Global)* **`Layout.astro` (`src/layouts/`):** Configura a base HTML (`<head>`, `<slot />`) incluindo a estabilização CSS essencial, variáveis globais do tema e estrutura da fonte/body do projeto.
+- **`Button.astro`:** Componente de ação genérico. Trabalha via propriedades ou classes para estabelecer a hierarquia visual.
+- *(Layout Global)* **`Layout.astro` (`src/layouts/`):** Configura a base HTML incluindo estilos e o **Navigation (Header)**.
+  - *Dropdown de Categorias:* O link "Categorias" no cabeçalho na verdade é um componente relacional (Dropdown). Ao clicar, expande uma lista com todas as categorias disponíveis. Ele é global, e se estiver em outra página, interage perfeitamente com a *Home* inserindo o parâmetro `/?category=X` na URL. Na *Home*, processa de forma reativa local sem recarregar a página inteiro.
 
 ## 5. Design System
 

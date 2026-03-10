@@ -6,6 +6,12 @@ interface Props {
 }
 
 const { title = "Receitas Premium" } = Astro.props;
+
+const headerCategories = [
+  'Todas', 'Aves', 'Peixes', 'Suínos', 'Bovinos', 
+  'Vegetal', 'Doces', 'Massas', 'Lanches', 
+  'Frutos do Mar', 'Saladas', 'Sopas'
+];
 ---
 
 <!doctype html>
@@ -23,7 +29,17 @@ const { title = "Receitas Premium" } = Astro.props;
 				<a href="/" class="logo">Minha <span>Receita</span></a>
 				<nav class="nav-links">
 					<a href="/">Início</a>
-					<a href="/categorias">Categorias</a>
+					<div class="dropdown" id="nav-dropdown">
+						<button class="dropdown-toggle" id="nav-dropdown-btn">
+							Categorias
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+						</button>
+						<div class="dropdown-menu" id="nav-dropdown-menu">
+							{headerCategories.map(cat => (
+								<a href={`/?category=${cat}`} class="dropdown-item nav-category-link" data-category={cat}>{cat}</a>
+							))}
+						</div>
+					</div>
 				</nav>
 			</div>
 		</header>
@@ -86,15 +102,73 @@ const { title = "Receitas Premium" } = Astro.props;
 
 	.nav-links {
 		display: flex;
+		align-items: center;
 		gap: var(--spacing-md);
 	}
 
 	.nav-links a {
 		font-weight: 500;
 		color: var(--text-dark);
+		text-decoration: none;
 	}
 	
 	.nav-links a:hover {
+		color: var(--color-primary);
+	}
+
+	.dropdown {
+		position: relative;
+		display: inline-block;
+	}
+
+	.dropdown-toggle {
+		background: none;
+		border: none;
+		font-weight: 500;
+		color: var(--text-dark);
+		font-family: inherit;
+		font-size: 1rem;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		padding: 0;
+		transition: var(--transition-smooth);
+	}
+
+	.dropdown-toggle:hover {
+		color: var(--color-primary);
+	}
+
+	.dropdown-menu {
+		display: none;
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: var(--bg-surface);
+		min-width: 160px;
+		box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+		border-radius: var(--radius-md);
+		padding: var(--spacing-sm) 0;
+		z-index: 200;
+		margin-top: 8px;
+	}
+
+	.dropdown.active .dropdown-menu {
+		display: block;
+	}
+
+	.dropdown-item {
+		display: block;
+		padding: 8px 16px;
+		color: var(--text-dark);
+		text-decoration: none;
+		transition: var(--transition-smooth);
+	}
+
+	.dropdown-item:hover {
+		background-color: #FFF5F0;
 		color: var(--color-primary);
 	}
 
@@ -125,3 +199,23 @@ const { title = "Receitas Premium" } = Astro.props;
 		font-size: 0.9rem;
 	}
 </style>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const dropdown = document.getElementById('nav-dropdown');
+		const btn = document.getElementById('nav-dropdown-btn');
+		
+		if (btn && dropdown) {
+			btn.addEventListener('click', (e) => {
+				e.stopPropagation();
+				dropdown.classList.toggle('active');
+			});
+			
+			document.addEventListener('click', (e) => {
+				if (!dropdown.contains(e.target as Node)) {
+					dropdown.classList.remove('active');
+				}
+			});
+		}
+	});
+</script>
