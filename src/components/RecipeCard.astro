@@ -7,9 +7,10 @@ interface Props {
   time: string;
   portions: string;
   url: string;
+  body?: string;
 }
 
-const { title, image, category, time, portions, url } = Astro.props;
+const { title, image, category, time, portions, url, body = '' } = Astro.props;
 
 // Categorical Colors mapping based on Design System
 const categoryColors: Record<string, string> = {
@@ -28,7 +29,7 @@ const categoryColors: Record<string, string> = {
 const badgeColor = categoryColors[category] || 'var(--color-primary)';
 ---
 
-<a href={url} class="recipe-card" data-category={category}>
+<a href={url} class="recipe-card" data-category={category} data-title={title} data-body={body}>
   <div class="card-image-wrapper">
     <img src={image} alt={title} class="card-image" loading="lazy" />
     <div class="category-badge" style={`background-color: ${badgeColor}`}>{category}</div>

@@ -57,6 +57,7 @@ const categorias = [
           time={receita.data.time}
           portions={receita.data.portions}
           url={`/receitas/${receita.id}`}
+          body={receita.body}
         />
       ))}
     </div>
@@ -66,26 +67,58 @@ const categorias = [
     document.addEventListener('DOMContentLoaded', () => {
       const filters = document.querySelectorAll('.category-chip');
       const cards = document.querySelectorAll('.recipe-card');
+      const searchInput = document.getElementById('recipe-search') as HTMLInputElement | null;
+
+      let activeCategory = 'Todas';
+      let searchQuery = '';
+
+      const removeAccents = (str: string | null) => {
+        return str ? str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() : '';
+      };
+
+      const filterCards = () => {
+        const queryWords = removeAccents(searchQuery).split(' ').filter(w => w.length > 0);
+
+        cards.forEach(card => {
+          const cardCategory = card.getAttribute('data-category');
+          const cardTitle = removeAccents(card.getAttribute('data-title'));
+          const cardBody = removeAccents(card.getAttribute('data-body'));
+          const cleanedCategory = removeAccents(cardCategory);
+
+          const matchesCategory = activeCategory === 'Todas' || cardCategory === activeCategory;
+          
+          let matchesSearch = true;
+          if (queryWords.length > 0) {
+            matchesSearch = queryWords.every(word => 
+              cardTitle.includes(word) || 
+              cardBody.includes(word) || 
+              cleanedCategory.includes(word)
+            );
+          }
+
+          if (matchesCategory && matchesSearch) {
+            (card as HTMLElement).style.display = 'flex';
+          } else {
+            (card as HTMLElement).style.display = 'none';
+          }
+        });
+      };
 
       filters.forEach(filter => {
         filter.addEventListener('click', () => {
-          // Remove a classe active de todos
           filters.forEach(btn => btn.classList.remove('active'));
-          // Adiciona no clicado
           filter.classList.add('active');
-
-          const categoriaClicada = filter.getAttribute('data-category');
-
-          cards.forEach(card => {
-            const categoriaCard = card.getAttribute('data-category');
-            if (categoriaClicada === 'Todas' || categoriaCard === categoriaClicada) {
-              (card as HTMLElement).style.display = 'flex';
-            } else {
-              (card as HTMLElement).style.display = 'none';
-            }
-          });
+          activeCategory = filter.getAttribute('data-category') || 'Todas';
+          filterCards();
         });
       });
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          searchQuery = (e.target as HTMLInputElement).value;
+          filterCards();
+        });
+      }
     });
   </script>
 </Layout>
